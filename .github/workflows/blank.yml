@@ -1,0 +1,56 @@
+#define Lpwm_pin  5     //pin of controlling speed---- ENA of motor driver board
+#define Rpwm_pin  6    //pin of controlling speed---- ENB of motor driver board
+int pinLB=2;             //pin of controlling turning---- IN1 of motor driver board
+int pinLF=4;             //pin of controlling turning---- IN2 of motor driver board
+int pinRB=7;            //pin of controlling turning---- IN3 of motor driver board
+int pinRF=8;            //pin of controlling turning---- IN4 of motor driver board
+#include <SoftwareSerial.h>// import the serial library
+// This program shown how to control arduino from PC Via Bluetooth
+// Connect ...
+// arduino>>bluetooth
+// D11   >>>  Rx
+// D10   >>>  Tx
+//Written By Mohannad Rawashdeh
+//for http://www.genotronex.com/
+
+// you will need arduino 1.0.1 or higher to run this sketch
+
+#include <SoftwareSerial.h>// import the serial library
+
+SoftwareSerial mySerial(11, 10); // RX, TX
+//int ledpin=13; // led on D13 will show blink on / off
+int cmd; // the data given from Computer
+
+void setup() {
+  pinMode(pinLB,OUTPUT); // /pin 2
+  pinMode(pinLF,OUTPUT); // pin 4
+  pinMode(pinRB,OUTPUT); // pin 7
+  pinMode(pinRF,OUTPUT);  // pin 8
+  pinMode(Lpwm_pin,OUTPUT);  // pin 5 (PWM) 
+  pinMode(Rpwm_pin,OUTPUT);  // pin 6(PWM)
+  // put your setup code here, to run once:
+  mySerial.begin(9600);
+  Serial.begin(9600);
+  //pinMode(ledpin,OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  mySerial.println("Please press 1 or 0 ..");
+   if (mySerial.available()){
+    cmd=mySerial.read();
+    if(cmd=='1'){   // if number 1 pressed ....
+      digitalWrite(pinRB,HIGH); 
+     digitalWrite(pinRF,LOW);
+     digitalWrite(pinLB,HIGH);
+     digitalWrite(pinLF,LOW);
+    }
+    if (cmd=='0'){// if number 0 pressed ....
+      //digitalWrite(ledpin,0);
+      //Genotronex.println("LED  On D13 Off ! ");
+      Serial.println("Zero!!");
+    }
+
+  }
+delay(1000);// prepare for next data ...
+}
